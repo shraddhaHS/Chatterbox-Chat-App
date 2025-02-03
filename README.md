@@ -2,6 +2,9 @@
 
 ChatterBox is a real-time chat application designed for seamless messaging and interaction. Built with React, Node.js, and Socket.io, it provides an intuitive and modern user experience for instant communication.
 
+## 🌍 Live Demo
+Check out the live version of ChatterBox here: https://chatterbox-chat-app-yufr.onrender.com
+
 ## 🚀 Features
 
 - 🔹 **Real-time Messaging** – Instant updates using WebSockets.
@@ -28,7 +31,6 @@ ChatterBox is a real-time chat application designed for seamless messaging and i
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/shraddhaHS/Chatterbox-Chat-App
-   cd chatApp
    ```
 
 2. **Install dependencies:**
