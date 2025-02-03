@@ -1,48 +1,60 @@
-import { useState,useRef } from "react"
-import {useChatStore} from "../store/useChatStore"
-import {Image,Send,X} from "lucide-react"
-import toast from "react-hot-toast"
+import { useState, useRef, useEffect } from "react";
+import { useChatStore } from "../store/useChatStore";
+import { Image, Send, X } from "lucide-react";
+import toast from "react-hot-toast";
 
-const MessageInput = () => {
-    const [text,setText] = useState("")
-    const [imagePreview,setImagePreview] = useState(null)
-    const fileInputRef = useRef(null)
-    const {sendMessage} = useChatStore()
+const MessageInput = ({ editingMessage, setEditingMessage }) => {
+ 
+  const [text, setText] = useState(editingMessage ? editingMessage.currentText : "");
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
 
-    const handleImageChange = (e) => {
-      const file = e.target.files[0];
-      if (!file.type.startsWith("image/")) {
-        toast.error("Please select an image file");
-        return;
-      }
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setImagePreview(reader.result)
-      }
-      reader.readAsDataURL(file)
+  const { sendMessage, editMessage } = useChatStore();
+  useEffect(() => {
+    if (editingMessage) {
+      setText(editingMessage.currentText);
+    } else {
+      setText("");
     }
-    const removeImage = () => {
-        setImagePreview(null)
-        if(fileInputRef.current) fileInputRef.current.value = ""
+  }, [editingMessage]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
     }
-    const handleSendMessage = async (e) => {
-        e.preventDefault()
-        if(!text.trim() && !imagePreview ) return
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
-        try {
-            await sendMessage({
-                text:text.trim(),
-                image:imagePreview
-            })
-            //clear form
-            setText("")
-            setImagePreview(null)
-            if(fileInputRef.current) fileInputRef.current.value = ""
-        } catch (error) {
-            console.log("failed to send message:",error)
-        }
+  const removeImage = () => {
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!text.trim() && !imagePreview) return;
+
+    if (editingMessage) {
+   
+      await editMessage(editingMessage.messageId, text.trim());
+      setEditingMessage(null); 
+    } else {
+   
+      await sendMessage({
+        text: text.trim(),
+        image: imagePreview,
+      });
     }
+    setText("");
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   return (
     <div className="p-4 w-full">
@@ -56,8 +68,7 @@ const MessageInput = () => {
             />
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300 flex items-center justify-center"
               type="button"
             >
               <X className="size-3" />
@@ -65,25 +76,30 @@ const MessageInput = () => {
           </div>
         </div>
       )}
+
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2">
-            <input  type ="text"
-             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-             placeholder="Type a message..."
-             value = {text}
-             onChange={(e)=> setText(e.target.value)}
-            />
-            <input  type ="file"
-             className="hidden"
+          <input
+            type="text"
+            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
+            placeholder="Type a message..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <input
+            type="file"
+            className="hidden"
             accept="image/*"
             ref={fileInputRef}
-             onChange={handleImageChange}
-            />
-            <button type="button" className={`hidden sm:flex btn btn-circle ${imagePreview? "text-emerald-500": "text-zinc-400"}`}
-             onClick={()=> fileInputRef.current?.click()}
-            >
+            onChange={handleImageChange}
+          />
+          <button
+            type="button"
+            className={`hidden sm:flex btn btn-circle ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <Image size={20} />
-            </button>
+          </button>
         </div>
 
         <button
@@ -95,7 +111,7 @@ const MessageInput = () => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default MessageInput
+export default MessageInput;
