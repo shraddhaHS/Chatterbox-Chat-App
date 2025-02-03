@@ -11,6 +11,7 @@ Check out the live version of ChatterBox here: https://chatterbox-chat-app-yufr.
 - 🔹 **User Authentication** – Secure login and signup.
 - 🔹 **Multiple Themes** – Customize the look using variouse themes provided by Daisy UI.
 - 🔹 **Responsive UI** – Optimized for all screen sizes.
+- 🔹 **State Management** – Efficient state handling using Zustand.
 
 ## 🛠️ Tech Stack
 
