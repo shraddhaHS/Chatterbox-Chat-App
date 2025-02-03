@@ -40,11 +40,16 @@ Check out the live version of ChatterBox here: https://chatterbox-chat-app-yufr.
    ```
 
 3. **Configure environment variables:**
-   - Create a `.env` file in the `server` folder with the following:
+   - Create a `.env` file in the `backend` folder with the following:
      ```
      PORT=5001
-     MONGO_URI=your_mongodb_connection_string
-     JWT_SECRET=your_secret_key
+     MONGODB_URI=
+     JWT_SECRET=
+     CLOUDINARY_CLOUDNAME=
+     CLOUDINARY_API_KEY=
+     CLOUDINARY_API_SECRET=
+     NODE_ENV=
+     
      ```
 
 4. **Run the application:**
