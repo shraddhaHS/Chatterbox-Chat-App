@@ -15,7 +15,7 @@ Check out the live version of ChatterBox here: https://chatterbox-chat-app-yufr.
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Tailwind CSS ,lucide-react,DaisyUi
+- **Frontend:** React, Tailwind CSS ,lucide-react,DaisyUi,Zustand
 - **Backend:** Node.js, Express.js  
 - **Real-time Communication:** Socket.io  
 - **Database:** MongoDB  
